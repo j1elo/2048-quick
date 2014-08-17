@@ -11,7 +11,6 @@ class MainWindowUi : public BaseUi
 
 public:
     MainWindowUi(QObject* parent = 0);
-//    virtual ~MainWindowUi();
 
 protected:
     virtual void rootSetup();

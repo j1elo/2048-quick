@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-class BoardItem;
+class Board;
 
 class GameManager : public QObject
 {
@@ -21,12 +21,12 @@ public slots:
     void moveRight();
 
 signals:
-    void valueAdded(int index, int value);
-    void valueMoved(int fromIndex, int toIndex);
-    void valueChanged(int index, int value);
+    void tileAdded(int index, int value);
+    void tileMoved(int fromIndex, int toIndex);
+    void tilesMerged(int fromIndex, int toIndex, int value);
 
 private:
-    BoardItem* m_boardItem;
+    Board* m_board;
 };
 
 #endif // GAMEMANAGER_H

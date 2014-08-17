@@ -12,13 +12,6 @@ MainWindowUi::MainWindowUi(QObject* parent)
     setObjectName(metaObject()->className());
 }
 
-//MainWindowUi::~MainWindowUi()
-//{
-//    // FIXME - forced crash: work around bug QTBUG-36900
-//    qDebug() << "[MainWindowUi::~MainWindowUi]";
-//    delete m_boardUi; delete m_boardUi;
-//}
-
 void MainWindowUi::rootSetup()
 {
     qDebug() << "[MainWindowUi::rootSetup]" << "objectName:" << objectName();

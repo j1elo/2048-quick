@@ -35,8 +35,8 @@ DEPENDPATH *= .
 
 HEADERS *= \
     GameManager.h \
-    BoardItem.h
+    Board.h
 
 SOURCES *= \
     GameManager.cpp \
-    BoardItem.cpp
+    Board.cpp

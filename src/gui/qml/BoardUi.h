@@ -21,7 +21,7 @@ private slots:
     // React to changes in data model
     void addTile(int index, int value);
     void moveTile(int fromIndex, int toIndex);
-    void setTile(int index, int value);
+    void mergeTiles(int fromIndex, int toIndex, int value);
 };
 
 #endif // BOARDUI_H

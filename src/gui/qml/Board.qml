@@ -19,29 +19,16 @@ Rectangle {
     property int gridSize: 4
     property real gridSpacing: width * 0.03
     property real gridItemSize: width * 0.2125
-//    property int gridSize
-//    property real gridSpacing
-//    property real gridItemSize
 
     function addTile(index, value) {
-        console.log("[Board.qml addTile]");
-        console.log("width:", width, "height:", height);
-        for (var i = 0; i < gridRepeater.count; i++) {
-            console.log("Item", i, "x:", gridRepeater.itemAt(i).x, "y:", gridRepeater.itemAt(i).y);
-        }
+//        console.log("width:", width, "height:", height);
+//        for (var i = 0; i < gridRepeater.count; i++) {
+//            print("Item", i, "x:", gridRepeater.itemAt(i).x, "y:", gridRepeater.itemAt(i).y);
+//        }
 
-        console.log("[Board.qml] addTile", "index:", index, "value:", value);
+        print("[Board.qml addTile]", "index:", index, "value:", value);
         var component = Qt.createComponent("Tile.qml");
-        if (component.status == Component.Ready) {
-//            var tile = component.createObject(
-//                gridContainer,
-//                {
-//                    "x": Qt.binding(function() { return gridRepeater.itemAt(index).x; }),
-//                    "y": Qt.binding(function() { return gridRepeater.itemAt(index).y; }),
-//                    "width": Qt.binding(function() { return gridItemSize; }),
-//                    "height": Qt.binding(function() { return gridItemSize; }),
-//                    "value": value
-//                });
+        if (component.status === Component.Ready) {
             var tile = component.createObject(
                 null,
                 {
@@ -49,17 +36,9 @@ Rectangle {
                     "y": Qt.binding(function() { return gridRepeater.itemAt(index).y; }),
                     "width": Qt.binding(function() { return gridItemSize; }),
                     "height": Qt.binding(function() { return gridItemSize; }),
-                    "value": value
+                    "value": value,
+                    "addAnimated": true
                 });
-//            var tile = component.createObject(
-//                null,
-//                {
-//                    "x": gridRepeater.itemAt(index).x,
-//                    "y": gridRepeater.itemAt(index).y,
-//                    "width": gridItemSize,
-//                    "height": gridItemSize,
-//                    "value": value
-//                });
             tile.parent = gridContainer;
             _tiles[index] = tile;
         }
@@ -69,20 +48,27 @@ Rectangle {
         console.log("[Board.qml] moveTile", "fromIndex:", fromIndex, "toIndex:", toIndex);
         var oldTile = _tiles[toIndex];
         if (oldTile) {
-            oldTile.destroy(oldTile.speed);
-            _tiles[toIndex] = null;
+            console.log("ERROR: Destination tile should be empty. This is a bug!!")
         }
         var tile = _tiles[fromIndex];
-        tile.x = Qt.binding(function() { return gridRepeater.itemAt(toIndex).x; });
-        tile.y = Qt.binding(function() { return gridRepeater.itemAt(toIndex).y; });
+//        tile.x = Qt.binding(function() { return gridRepeater.itemAt(toIndex).x; });
+//        tile.y = Qt.binding(function() { return gridRepeater.itemAt(toIndex).y; });
+        tile.move(gridRepeater.itemAt(toIndex).x, gridRepeater.itemAt(toIndex).y);
         _tiles[toIndex] = tile;
         _tiles[fromIndex] = null;
     }
 
-    function setTile(index, value) {
-        console.log("[Board.qml] setTile", "index:", index, "value:", value);
-        var tile = _tiles[index];
-        tile.value = value;
+    function mergeTiles(fromIndex, toIndex, value) {
+        console.log("[Board.qml] mergeTiles", "fromIndex:", fromIndex, "toIndex:", toIndex, "value:", value);
+        var oldTile = _tiles[toIndex];
+        if (oldTile) {
+            oldTile.destroy(oldTile.delay);
+            _tiles[toIndex] = null;
+        }
+        var tile = _tiles[fromIndex];
+        tile.merge(gridRepeater.itemAt(toIndex).x, gridRepeater.itemAt(toIndex).y, value);
+        _tiles[toIndex] = tile;
+        _tiles[fromIndex] = null;
     }
 
     // Private:
@@ -126,11 +112,11 @@ Rectangle {
         }
     }
 
-    Component.onCompleted: {
-        console.log("[Board.qml onCompleted]");
-        console.log("width:", width, "height:", height);
-        for (var i = 0; i < gridRepeater.count; i++) {
-            console.log("Item", i, "x:", gridRepeater.itemAt(i).x, "y:", gridRepeater.itemAt(i).y);
-        }
-    }
+//    Component.onCompleted: {
+//        console.log("[Board.qml onCompleted]");
+//        console.log("width:", width, "height:", height);
+//        for (var i = 0; i < gridRepeater.count; i++) {
+//            console.log("Item", i, "x:", gridRepeater.itemAt(i).x, "y:", gridRepeater.itemAt(i).y);
+//        }
+//    }
 }

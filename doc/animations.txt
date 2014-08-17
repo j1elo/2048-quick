@@ -1,0 +1,18 @@
+From 2048 source code
+
+main.css file:
+
+@keyframes appear (tile added)
+  Scale from 0.0 (at 0%) to 1.0 (at 100%)
+  Duration 200ms, Easing.InOutQuad, Delay 100ms
+
+@keyframes pop (tiles merged)
+  Scale from 0.0 (at 0%) to 1.2 (at 50%) to 1.0 (at 100%)
+  Duration 200ms, Easing.InOutQuad, Delay 100ms
+
+
+main.scss file:
+Tile movement:
+$transition-speed: 100ms;
+@include animation(appear 200ms ease $transition-speed);
+This shows a new tile only when the previous one finished moving (delay of $transition-speed ms)

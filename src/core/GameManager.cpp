@@ -1,58 +1,58 @@
 #include "GameManager.h"
-#include "BoardItem.h"
+#include "Board.h"
 
 #include <QtDebug>
 
 GameManager::GameManager(QObject* parent)
     : QObject(parent)
-    , m_boardItem(nullptr)
+    , m_board(nullptr)
 {}
 
 void GameManager::startNewGame()
 {
-    delete m_boardItem;
-    m_boardItem = new BoardItem(4, 4);
+    delete m_board;
+    m_board = new Board(4, 4);
 
-    connect(m_boardItem, SIGNAL(valueAdded(int,int)), this, SIGNAL(valueAdded(int,int)));
-    connect(m_boardItem, SIGNAL(valueMoved(int,int)), this, SIGNAL(valueMoved(int,int)));
-    connect(m_boardItem, SIGNAL(valueChanged(int,int)), this, SIGNAL(valueChanged(int,int)));
+    connect(m_board, SIGNAL(tileAdded(int,int)), this, SIGNAL(tileAdded(int,int)));
+    connect(m_board, SIGNAL(tileMoved(int,int)), this, SIGNAL(tileMoved(int,int)));
+    connect(m_board, SIGNAL(tilesMerged(int,int,int)), this, SIGNAL(tilesMerged(int,int,int)));
 
-    m_boardItem->setCellRandom();
-    qDebug() << qPrintable(m_boardItem->toString());
+    m_board->addRandomTile();
+    qDebug() << qPrintable(m_board->toString());
 }
 
 void GameManager::moveUp()
 {
-    Q_ASSERT(m_boardItem);
-    if (m_boardItem->fallUp()) {
-        m_boardItem->setCellRandom();
+    Q_ASSERT(m_board);
+    if (m_board->moveUp()) {
+        m_board->addRandomTile();
     }
-    qDebug() << qPrintable(m_boardItem->toString());
+    qDebug() << qPrintable(m_board->toString());
 }
 
 void GameManager::moveDown()
 {
-    Q_ASSERT(m_boardItem);
-    if (m_boardItem->fallDown()) {
-        m_boardItem->setCellRandom();
+    Q_ASSERT(m_board);
+    if (m_board->moveDown()) {
+        m_board->addRandomTile();
     }
-    qDebug() << qPrintable(m_boardItem->toString());
+    qDebug() << qPrintable(m_board->toString());
 }
 
 void GameManager::moveLeft()
 {
-    Q_ASSERT(m_boardItem);
-    if (m_boardItem->fallLeft()) {
-        m_boardItem->setCellRandom();
+    Q_ASSERT(m_board);
+    if (m_board->moveLeft()) {
+        m_board->addRandomTile();
     }
-    qDebug() << qPrintable(m_boardItem->toString());
+    qDebug() << qPrintable(m_board->toString());
 }
 
 void GameManager::moveRight()
 {
-    Q_ASSERT(m_boardItem);
-    if (m_boardItem->fallRight()) {
-        m_boardItem->setCellRandom();
+    Q_ASSERT(m_board);
+    if (m_board->moveRight()) {
+        m_board->addRandomTile();
     }
-    qDebug() << qPrintable(m_boardItem->toString());
+    qDebug() << qPrintable(m_board->toString());
 }
