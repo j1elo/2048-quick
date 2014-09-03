@@ -57,3 +57,6 @@ OTHER_FILES += \
     qml/Board.qml \
     qml/Tile.qml \
     qml/MainWindow.qml
+
+RESOURCES += \
+    fonts.qrc
