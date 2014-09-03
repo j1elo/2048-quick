@@ -19,13 +19,6 @@ int Board::cell(int row, int col)
     return m_data[row * m_numCols + col];
 }
 
-//void Board::setCell(int row, int col, int value)
-//{
-//    Q_ASSERT(row * m_numCols + col < m_data.size());
-//    m_data[row * m_numCols + col] = value;
-//    emit cellSet(row, col, value);
-//}
-
 void Board::addRandomTile()
 {
     // First find an empty space
@@ -38,10 +31,6 @@ void Board::addRandomTile()
     } while (m_data[index] != 0);
 
     // Now, insert there
-//    int row = qFloor((double)index / m_numCols);
-//    int col = index % m_numCols;
-//    int value = ((double)qrand() / RAND_MAX) < 0.9 ? 2 : 4;
-//    setCell(row, col, value);
     int value = ((double)qrand() / RAND_MAX) < 0.9 ? 2 : 4;
     m_data[index] = value;
     emit tileAdded(index, value);
@@ -142,7 +131,7 @@ bool Board::fall(int majorSize, int minorSize, IndexFn index)
                 m_data[index(major, fall)] = m_data[index(major, fall)] + m_data[index(major, minor)];
                 m_data[index(major, minor)] = 0;
                 moved = true;
-                emit tilesMerged(index(major, minor), index(major, fall), m_data[index(major, fall)]);
+                emit tileMoved(index(major, minor), index(major, fall), m_data[index(major, fall)]);
                 fall++;
             }
             else if (m_data[index(major, fall)] == 0) {

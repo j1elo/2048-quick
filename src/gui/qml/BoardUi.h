@@ -20,8 +20,7 @@ protected:
 private slots:
     // React to changes in data model
     void addTile(int index, int value);
-    void moveTile(int fromIndex, int toIndex);
-    void mergeTiles(int fromIndex, int toIndex, int value);
+    void moveTile(int fromIndex, int toIndex, int newValue);
 };
 
 #endif // BOARDUI_H

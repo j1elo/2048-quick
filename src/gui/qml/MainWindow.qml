@@ -5,30 +5,14 @@ import QtQuick.Layouts 1.1
 Window {
     id: root
     visible: true
-    width: 360
-    height: 360
+    width: 480
+    height: 640
     color: "lightgrey"
-    title: qsTr("2048 Quick!");
+    title: qsTr("2048 Quick!")
 
-    Rectangle {
+    Board {
+        id: board
+        objectName: "BoardQML"
         anchors.fill: parent
-
-        ColumnLayout {
-            id: columnLay
-            anchors.fill: parent
-            anchors.margins: 25
-            spacing: 6
-
-            Text { text: "Hello" }
-
-            Board {
-                id: board
-                objectName: "BoardQML"
-                Layout.preferredWidth: columnLay.width
-                Layout.preferredHeight: columnLay.width
-            }
-
-            Text { text: "bye" }
-        }
     }
 }

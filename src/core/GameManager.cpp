@@ -14,8 +14,7 @@ void GameManager::startNewGame()
     m_board = new Board(4, 4);
 
     connect(m_board, SIGNAL(tileAdded(int,int)), this, SIGNAL(tileAdded(int,int)));
-    connect(m_board, SIGNAL(tileMoved(int,int)), this, SIGNAL(tileMoved(int,int)));
-    connect(m_board, SIGNAL(tilesMerged(int,int,int)), this, SIGNAL(tilesMerged(int,int,int)));
+    connect(m_board, SIGNAL(tileMoved(int,int,int)), this, SIGNAL(tileMoved(int,int,int)));
 
     m_board->addRandomTile();
     qDebug() << qPrintable(m_board->toString());

@@ -4,11 +4,19 @@ import QtQuick.Layouts 1.1
 Rectangle {
     id: root
 
-    focus: true // Enable keyboard events
-    Keys.onUpPressed: upPressed()
-    Keys.onDownPressed: downPressed()
-    Keys.onLeftPressed: leftPressed()
-    Keys.onRightPressed: rightPressed()
+    Keys.onUpPressed: { focus = false; upPressed() }
+    Keys.onDownPressed: { focus = false; downPressed() }
+    Keys.onLeftPressed: { focus = false; leftPressed() }
+    Keys.onRightPressed: { focus = false; rightPressed() }
+
+    onFocusChanged: keysTimer.start()
+    Timer {
+        // This timer avoids overlapping key inputs
+        // (ie. a key input when the animation of the previous one didn't finish yet)
+        id: keysTimer; interval: 200; running: true
+        // FIXME: this should be Tile.delay * 2.0
+        onTriggered: root.focus = true // Enable keyboard events
+    }
 
     signal upPressed()
     signal downPressed()
@@ -32,10 +40,10 @@ Rectangle {
             var tile = component.createObject(
                 null,
                 {
-                    "x": Qt.binding(function() { return gridRepeater.itemAt(index).x; }),
-                    "y": Qt.binding(function() { return gridRepeater.itemAt(index).y; }),
-                    "width": Qt.binding(function() { return gridItemSize; }),
-                    "height": Qt.binding(function() { return gridItemSize; }),
+                    "x": gridRepeater.itemAt(index).x,
+                    "y": gridRepeater.itemAt(index).y,
+                    "width": gridItemSize,
+                    "height": gridItemSize,
                     "value": value,
                     "addAnimated": true
                 });
@@ -44,29 +52,22 @@ Rectangle {
         }
     }
 
-    function moveTile(fromIndex, toIndex) {
-        console.log("[Board.qml] moveTile", "fromIndex:", fromIndex, "toIndex:", toIndex);
+    function moveTile(fromIndex, toIndex, newValue) {
+        console.log("[Board.qml] moveTile", "fromIndex:", fromIndex, "toIndex:", toIndex, "newValue:", newValue);
+        var merging = (newValue > 0);
         var oldTile = _tiles[toIndex];
         if (oldTile) {
-            console.log("ERROR: Destination tile should be empty. This is a bug!!")
+            if (!merging) {
+                console.log("ERROR: Destination tile should be empty. This is a bug!!")
+            } else {
+                oldTile.destroy(oldTile.delay);
+                _tiles[toIndex] = null;
+            }
         }
         var tile = _tiles[fromIndex];
 //        tile.x = Qt.binding(function() { return gridRepeater.itemAt(toIndex).x; });
 //        tile.y = Qt.binding(function() { return gridRepeater.itemAt(toIndex).y; });
-        tile.move(gridRepeater.itemAt(toIndex).x, gridRepeater.itemAt(toIndex).y);
-        _tiles[toIndex] = tile;
-        _tiles[fromIndex] = null;
-    }
-
-    function mergeTiles(fromIndex, toIndex, value) {
-        console.log("[Board.qml] mergeTiles", "fromIndex:", fromIndex, "toIndex:", toIndex, "value:", value);
-        var oldTile = _tiles[toIndex];
-        if (oldTile) {
-            oldTile.destroy(oldTile.delay);
-            _tiles[toIndex] = null;
-        }
-        var tile = _tiles[fromIndex];
-        tile.merge(gridRepeater.itemAt(toIndex).x, gridRepeater.itemAt(toIndex).y, value);
+        tile.move(gridRepeater.itemAt(toIndex).x, gridRepeater.itemAt(toIndex).y, newValue);
         _tiles[toIndex] = tile;
         _tiles[fromIndex] = null;
     }
@@ -91,22 +92,13 @@ Rectangle {
         Grid {
             id: grid
             anchors.fill: parent
-//            columns: gridSize
             spacing: gridSpacing
 
             Repeater {
                 id: gridRepeater
                 model: gridSize * gridSize
-
-                // Delegate for each of the grid cells
-//                Rectangle {
-//                    width: gridItemSize; height: gridItemSize
-//                    radius: 4
-//                    color: Qt.rgba(238/255, 228/255, 218/255, 0.35)
-//                }
                 Tile {
                     width: gridItemSize; height: gridItemSize
-                    //width: 100; height: 100
                 }
             }
         }

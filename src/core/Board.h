@@ -30,8 +30,7 @@ public:
 
 signals:
     void tileAdded(int index, int value);
-    void tileMoved(int fromIndex, int toIndex);
-    void tilesMerged(int fromIndex, int toIndex, int value);
+    void tileMoved(int fromIndex, int toIndex, int newValue = 0);
 
 private:
     int cell(int row, int col);

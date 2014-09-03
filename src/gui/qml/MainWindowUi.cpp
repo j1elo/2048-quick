@@ -4,6 +4,7 @@
 
 #include <QtDebug>
 #include <QVariant>
+#include <QTimer>
 
 MainWindowUi::MainWindowUi(QObject* parent)
     : BaseUi(parent)
@@ -22,7 +23,7 @@ void MainWindowUi::rootSetup()
     m_boardUi->setRootObject(childQML);
 
     // TODO: this will be triggered by an action from the main menu
-    onNewGameRequested();
+    QTimer::singleShot(1000, this, SLOT(onNewGameRequested()));
 }
 
 void MainWindowUi::onNewGameRequested()

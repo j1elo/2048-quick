@@ -10,17 +10,19 @@ Rectangle {
     property int delay: 100 // Time in ms taken by behavior animations
     property bool addAnimated: false
 
-    function move(posX, posY) {
-        moveAnimationPos.x = posX;
-        moveAnimationPos.y = posY;
-        moveAnimation.start();
-    }
-
-    function merge(posX, posY, value) {
-        mergeAnimationPos.x = posX;
-        mergeAnimationPos.y = posY;
-        mergeAnimationScript.value = value;
-        mergeAnimation.start();
+    function move(posX, posY, newValue) {
+        if (newValue > 0) {
+            // Perform Move and Merge sequential animations
+            mergeAnimationPos.x = posX;
+            mergeAnimationPos.y = posY;
+            mergeAnimationScript.value = newValue;
+            mergeAnimation.restart();
+        } else {
+            // Just perform the Move animation
+            moveAnimationPos.x = posX;
+            moveAnimationPos.y = posY;
+            moveAnimation.restart();
+        }
     }
 
     // Add animation
@@ -31,6 +33,7 @@ Rectangle {
         easing.type: Easing.InOutQuad
     }
 
+    // Move animation
     PathAnimation {
         id: moveAnimation
         running: false
@@ -76,6 +79,6 @@ Rectangle {
         anchors.centerIn: parent
         visible: value > 0
         text: value
-        font.pixelSize: gridItemSize * 0.40
+        font.pixelSize: root.width * 0.40
     }
 }

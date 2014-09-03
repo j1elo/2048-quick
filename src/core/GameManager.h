@@ -22,8 +22,7 @@ public slots:
 
 signals:
     void tileAdded(int index, int value);
-    void tileMoved(int fromIndex, int toIndex);
-    void tilesMerged(int fromIndex, int toIndex, int value);
+    void tileMoved(int fromIndex, int toIndex, int newValue);
 
 private:
     Board* m_board;
